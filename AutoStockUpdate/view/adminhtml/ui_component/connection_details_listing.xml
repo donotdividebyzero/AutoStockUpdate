@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">connection_details_listing.autostock_update_conntection_details_grid_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>connection_details_listing_columns</spinner>
+        <deps>
+            <dep>connection_details_listing.autostock_update_conntection_details_grid_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="autostock_update_conntection_details_grid_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <filterUrlParams>
+                <param name="id">*</param>
+            </filterUrlParams>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="autostock_update_conntection_details_grid_data_source" />
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="connection_details_listing_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">connection_details_listing.connection_details_listing.connection_details_listing_columns.actions</item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">view</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <column name="id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Name</label>
+            </settings>
+        </column>
+        <column name="is_active">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Is Active</label>
+            </settings>
+        </column>
+        <column name="host">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Host</label>
+            </settings>
+        </column>
+        <column name="port">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Port</label>
+            </settings>
+        </column>
+        <column name="stock_file_directory">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Stock File Directory Path</label>
+            </settings>
+        </column>
+        <column name="archive_file_directory">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Archive File Directory Path</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="DivideByZero\AutoStockUpdate\Ui\Component\Listing\Columns\Actions" sortOrder="200">
+            <settings>
+                <indexField>id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

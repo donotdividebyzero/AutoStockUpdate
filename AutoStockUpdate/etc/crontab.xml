@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="DivideByZero_auto_stock_update" instance="DivideByZero\AutoStockUpdate\Api\StockUpdaterInterface" method="run">
+            <schedule>0/5 * * * *</schedule>
+        </job>
+    </group>
+</config>

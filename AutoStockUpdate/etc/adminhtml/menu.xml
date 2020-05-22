@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DivideByZero_AutoStockUpdate::locations" title="FTP Source Locations" module="DivideByZero_AutoStockUpdate" sortOrder="40" parent="Amasty_MultiInventory::multi_inventory" action="autostock/update/index" resource="DivideByZero_AutoStockUpdate::locations"/>
+    </menu>
+</config>

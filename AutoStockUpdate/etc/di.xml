@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="DivideByZero\AutoStockUpdate\Api\StockUpdaterInterface" type="DivideByZero\AutoStockUpdate\Model\Updater" />
+    <preference for="DivideByZero\AutoStockUpdate\Api\Data\SftpResourceInterface" type="DivideByZero\AutoStockUpdate\Model\SftpResource" />
+    <preference for="DivideByZero\AutoStockUpdate\Api\ParserPoolInterface" type="DivideByZero\AutoStockUpdate\Model\ParserPool" />
+    <preference for="DivideByZero\AutoStockUpdate\Api\Data\ConnectionInterface" type="DivideByZero\AutoStockUpdate\Model\Connection" />
+    <preference for="DivideByZero\AutoStockUpdate\Api\ConnectionRepositoryInterface" type="DivideByZero\AutoStockUpdate\Model\ConnectionRepository" />
+    <preference for="DivideByZero\AutoStockUpdate\Api\ConnectionDetailsSearchResultInterface" type="DivideByZero\AutoStockUpdate\Model\Resource\Connection\Collection" />
+
+    <type name="DivideByZero\AutoStockUpdate\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Virtual\DivideByZero\AutoStockUpdate\Debug" type="DivideByZero\AutoStockUpdate\Logger\Handler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/stock/%s/debug.log</argument>
+            <argument name="level" xsi:type="const">\Monolog\Logger::DEBUG</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Virtual\DivideByZero\AutoStockUpdate\Error" type="DivideByZero\AutoStockUpdate\Logger\Handler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/stock/%s/error.log</argument>
+            <argument name="level" xsi:type="const">\Monolog\Logger::ERROR</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Virtual\DivideByZero\AutoStockUpdate\Logger" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">stock_logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="debug" xsi:type="object">Virtual\DivideByZero\AutoStockUpdate\Debug</item>
+                <item name="error" xsi:type="object">Virtual\DivideByZero\AutoStockUpdate\Error</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="DivideByZero\AutoStockUpdate\Model\ParserPool">
+        <arguments>
+            <argument name="parsers" xsi:type="array">
+                <item name="csv" xsi:type="object">DivideByZero\AutoStockUpdate\Model\Parser\Csv</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="\DivideByZero\AutoStockUpdate\Model\Parser\SupplierConfigPool">
+        <arguments>
+            <argument name="suppliers" xsi:type="array">
+                <item name="eb" xsi:type="object">DivideByZero\AutoStockUpdate\Model\Parser\Supplier\EarlBrown</item>
+                <item name="ck" xsi:type="object">DivideByZero\AutoStockUpdate\Model\Parser\Supplier\DefaultSupplier</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="DivideByZero\AutoStockUpdate\Model\Updater">
+        <arguments>
+            <argument name="logger" xsi:type="object">Virtual\DivideByZero\AutoStockUpdate\Logger</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="DivideByZeroAutoStockUpdate" xsi:type="object">DivideByZero\AutoStockUpdate\Console\Command\StockUpdate</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="DivideByZero\AutoStockUpdate\Api\Data\ConnectionInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="const">\DivideByZero\AutoStockUpdate\Model\Connection::TABLE_NAME</item>
+                    <item name="identifierField" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="autostock_update_conntection_details_grid_data_source" xsi:type="string">DivideByZero\AutoStockUpdate\Model\Resource\Connection\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="DivideByZero\AutoStockUpdate\Model\Resource\Connection\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="const">\DivideByZero\AutoStockUpdate\Model\Connection::TABLE_NAME</argument>
+            <argument name="resourceModel" xsi:type="string">DivideByZero\AutoStockUpdate\Model\Resource\Connection</argument>
+        </arguments>
+    </virtualType>
+</config>
